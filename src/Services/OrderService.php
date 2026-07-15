@@ -3,6 +3,8 @@
 namespace Moe\Commerce\Services;
 
 use Illuminate\Support\Facades\DB;
+use Moe\Commerce\Events\OrderStatusChanged;
+use Moe\Commerce\Events\RefundRequested;
 use Moe\Commerce\Models\Order;
 use Moe\Commerce\Models\Refund;
 
@@ -28,6 +30,8 @@ class OrderService
         }
 
         DB::transaction(function () use ($order, $reason) {
+            $oldStatus = $order->status;
+
             // Restore stock
             foreach ($order->items as $item) {
                 $item->product->inventory()->increment('quantity', $item->quantity);
@@ -38,6 +42,8 @@ class OrderService
                 'cancelled_at' => now(),
                 'cancel_reason' => $reason,
             ]);
+
+            event(new OrderStatusChanged($order, $oldStatus, 'cancelled'));
         });
     }
 
@@ -59,6 +65,7 @@ class OrderService
             throw new \Exception("Transisi status dari '{$order->status}' ke '{$status}' tidak valid");
         }
 
+        $oldStatus = $order->status;
         $updateData = ['status' => $status];
 
         if ($status === 'delivered') {
@@ -70,6 +77,8 @@ class OrderService
         }
 
         $order->update($updateData);
+
+        event(new OrderStatusChanged($order, $oldStatus, $status));
     }
 
     /**
@@ -81,12 +90,16 @@ class OrderService
             throw new \Exception('Pesanan tidak dapat diajukan pengembalian');
         }
 
-        return Refund::create([
+        $refund = Refund::create([
             'order_id' => $order->id,
             'amount' => $amount,
             'reason' => $reason,
             'status' => 'pending',
         ]);
+
+        event(new RefundRequested($order, $refund));
+
+        return $refund;
     }
 
     /**

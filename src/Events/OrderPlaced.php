@@ -1,0 +1,13 @@
+<?php
+
+namespace Moe\Commerce\Events;
+
+use Illuminate\Foundation\Events\Dispatchable;
+use Moe\Commerce\Models\Order;
+
+class OrderPlaced
+{
+    use Dispatchable;
+
+    public function __construct(public Order $order) {}
+}

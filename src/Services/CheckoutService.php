@@ -4,6 +4,8 @@ namespace Moe\Commerce\Services;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
+use Moe\Commerce\Events\OrderPlaced;
 use Moe\Commerce\Models\Order;
 use Moe\Commerce\Models\OrderItem;
 use Moe\Commerce\Models\Product;
@@ -132,6 +134,8 @@ class CheckoutService
         foreach ($orderItems as $orderItem) {
             $order->items()->create($orderItem);
         }
+
+        event(new OrderPlaced($order));
 
         return $order;
     }

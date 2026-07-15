@@ -82,6 +82,9 @@ class Invoice extends Model
         });
     }
 
+    /**
+     * Generate a unique invoice number.
+     */
     public static function generateInvoiceNumber(string $type = self::TYPE_INVOICE): string
     {
         $prefix = match ($type) {
@@ -137,6 +140,9 @@ class Invoice extends Model
         };
     }
 
+    /**
+     * Check if the invoice is overdue.
+     */
     public function isOverdue(): bool
     {
         return $this->status === self::STATUS_UNPAID
@@ -144,6 +150,9 @@ class Invoice extends Model
             && $this->due_date->isPast();
     }
 
+    /**
+     * Mark the invoice as paid.
+     */
     public function markAsPaid(?string $reference = null): void
     {
         $this->update([
@@ -152,6 +161,9 @@ class Invoice extends Model
         ]);
     }
 
+    /**
+     * Mark the invoice as refunded.
+     */
     public function markAsRefunded(): void
     {
         $this->update(['status' => self::STATUS_REFUNDED]);

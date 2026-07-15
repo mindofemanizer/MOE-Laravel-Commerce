@@ -121,6 +121,9 @@ class Store extends Model
         }
     }
 
+    /**
+     * Get the effective fee rate for the store.
+     */
     public function getEffectiveFeeRate(): float
     {
         if ($this->fee_rate !== null) {

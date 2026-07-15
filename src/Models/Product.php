@@ -119,27 +119,41 @@ class Product extends Model implements SellableInterface
         return $this->hasMany(CartItem::class);
     }
 
-    // SellableInterface
+    /**
+     * Check if the product is available for purchase.
+     */
     public function isAvailable(): bool
     {
         return (bool) $this->is_active && $this->getStock() > 0;
     }
 
+    /**
+     * Get the current stock quantity.
+     */
     public function getStock(): int
     {
         return $this->inventory?->quantity ?? 0;
     }
 
+    /**
+     * Get the retail price.
+     */
     public function getPrice(): float
     {
         return (float) $this->retail_price;
     }
 
+    /**
+     * Get the minimum order quantity.
+     */
     public function getMinimumOrder(): int
     {
         return $this->minimum_order ?? 1;
     }
 
+    /**
+     * Get the store ID.
+     */
     public function getStoreId(): ?int
     {
         return $this->store_id;

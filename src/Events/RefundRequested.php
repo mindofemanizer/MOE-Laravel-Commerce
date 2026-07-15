@@ -14,3 +14,4 @@ class RefundRequested
 
     public function __construct(public Order $order, public Refund $refund) {}
 }
+

@@ -28,6 +28,8 @@ class CartService
 
     /**
      * Add item to cart.
+     *
+     * @throws \Exception
      */
     public function add(int $productId, int $quantity = 1): array
     {
@@ -50,6 +52,8 @@ class CartService
 
     /**
      * Update item quantity.
+     *
+     * @throws \Exception
      */
     public function update(int $productId, int $quantity): array
     {
@@ -116,7 +120,7 @@ class CartService
     }
 
     /**
-     * Get items grouped by store (for multi-store checkout).
+     * Get items grouped by store.
      */
     public function getGroupedByStore(): array
     {

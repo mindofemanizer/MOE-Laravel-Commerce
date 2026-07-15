@@ -137,11 +137,17 @@ class Order extends Model implements OrderInterface
         return (float) $this->total;
     }
 
+    /**
+     * Check if the order can be cancelled.
+     */
     public function canBeCancelled(): bool
     {
         return in_array($this->status, ['pending', 'processing']);
     }
 
+    /**
+     * Check if the order can be refunded.
+     */
     public function canBeRefunded(): bool
     {
         return in_array($this->status, ['delivered', 'completed']) && ! $this->refunds()->whereIn('status', ['pending', 'approved'])->exists();

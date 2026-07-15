@@ -24,6 +24,8 @@ class OrderService
 
     /**
      * Cancel order.
+     *
+     * @throws \Exception
      */
     public function cancel(Order $order, ?string $reason = null): void
     {
@@ -34,7 +36,6 @@ class OrderService
         DB::transaction(function () use ($order, $reason) {
             $oldStatus = $order->status;
 
-            // Restore stock
             foreach ($order->items as $item) {
                 $item->product->inventory()->increment('quantity', $item->quantity);
             }
@@ -51,6 +52,8 @@ class OrderService
 
     /**
      * Update order status.
+     *
+     * @throws \Exception
      */
     public function updateStatus(Order $order, string $status): void
     {
@@ -85,6 +88,8 @@ class OrderService
 
     /**
      * Request refund.
+     *
+     * @throws \Exception
      */
     public function requestRefund(Order $order, float $amount, ?string $reason = null): Refund
     {

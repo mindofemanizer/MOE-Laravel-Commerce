@@ -15,11 +15,12 @@ class CheckoutService
 {
     /**
      * Process checkout and create orders.
+     *
+     * @throws \RuntimeException
      */
     public function process(array $items, array $address, array $shipping, array $payment): array
     {
         return DB::transaction(function () use ($items, $address, $shipping, $payment) {
-            // Group items by store for multi-store support
             $grouped = $this->groupItemsByStore($items);
             $orders = [];
 
@@ -59,6 +60,7 @@ class CheckoutService
     {
         $subtotal = collect($items)->sum(function ($item) {
             $product = Product::find($item['product_id']);
+
             return $product ? $product->retail_price * $item['quantity'] : 0;
         });
 
@@ -69,6 +71,8 @@ class CheckoutService
 
     /**
      * Group items by store.
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     protected function groupItemsByStore(array $items): array
     {
@@ -85,6 +89,9 @@ class CheckoutService
 
     /**
      * Create order for a single store.
+     *
+     * @throws \RuntimeException
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     protected function createOrder(int $storeId, array $items, array $address, array $shipping, array $payment): Order
     {

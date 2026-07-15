@@ -41,6 +41,9 @@ class CartItem extends Model
         return $this->belongsTo(Product::class);
     }
 
+    /**
+     * Recalculate the subtotal based on unit price and quantity.
+     */
     public function recalculate(): void
     {
         $this->subtotal = $this->unit_price * $this->quantity;

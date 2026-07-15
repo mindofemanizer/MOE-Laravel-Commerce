@@ -17,3 +17,4 @@ class OrderStatusChanged
         public string $newStatus,
     ) {}
 }
+

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Moe\Commerce\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -19,7 +21,7 @@ class Review extends Model
         'rating',
         'comment',
         'reply',
-        'replied_by',
+        'referred_by',
         'replied_at',
         'is_approved',
     ];
@@ -36,7 +38,7 @@ class Review extends Model
         $this->table = config('commerce.tables.reviews', 'commerce_reviews');
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(config('commerce.models.user', 'App\\Models\\User'));
     }

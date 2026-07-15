@@ -62,6 +62,10 @@ return [
 
         'invoices' => 'commerce_invoices',
 
+        'payments' => 'commerce_payments',
+
+        'refunds' => 'commerce_refunds',
+
     ],
 
     /*

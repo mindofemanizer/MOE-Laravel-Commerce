@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Moe\Commerce\Services;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Event;
 use Moe\Commerce\Events\OrderPlaced;
 use Moe\Commerce\Models\Order;
 use Moe\Commerce\Models\OrderItem;
@@ -74,7 +75,7 @@ class CheckoutService
         $grouped = [];
 
         foreach ($items as $item) {
-            $product = Product::find($item['product_id']);
+            $product = Product::findOrFail($item['product_id']);
             $storeId = $product->store_id ?? 0;
             $grouped[$storeId][] = $item;
         }
@@ -87,6 +88,10 @@ class CheckoutService
      */
     protected function createOrder(int $storeId, array $items, array $address, array $shipping, array $payment): Order
     {
+        if (! $this->validateStock($items)) {
+            throw new \RuntimeException('Stok tidak mencukupi untuk satu atau lebih item.');
+        }
+
         $subtotal = 0;
         $orderItems = [];
 
@@ -105,8 +110,11 @@ class CheckoutService
                 'discount' => 0,
             ];
 
-            // Decrement stock
-            $product->inventory()->decrement('quantity', $item['quantity']);
+            if (method_exists($product, 'decrementStock')) {
+                $product->decrementStock($item['quantity'], 'sale');
+            } else {
+                $product->inventory()->decrement('quantity', $item['quantity']);
+            }
         }
 
         $shippingCost = $shipping['cost'] ?? 0;

@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Moe\Commerce\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
@@ -32,19 +35,19 @@ class Invoice extends Model
         'metadata',
     ];
 
-    const TYPE_INVOICE = 'invoice';
-    const TYPE_CREDIT_NOTE = 'credit_note';
-    const TYPE_DEBIT_NOTE = 'debit_note';
-    const TYPE_PROFORMA = 'proforma';
-    const TYPE_TAX = 'tax';
+    public const TYPE_INVOICE = 'invoice';
+    public const TYPE_CREDIT_NOTE = 'credit_note';
+    public const TYPE_DEBIT_NOTE = 'debit_note';
+    public const TYPE_PROFORMA = 'proforma';
+    public const TYPE_TAX = 'tax';
 
-    const STATUS_UNPAID = 'unpaid';
-    const STATUS_PAID = 'paid';
-    const STATUS_OVERDUE = 'overdue';
-    const STATUS_CANCELLED = 'cancelled';
-    const STATUS_REFUNDED = 'refunded';
+    public const STATUS_UNPAID = 'unpaid';
+    public const STATUS_PAID = 'paid';
+    public const STATUS_OVERDUE = 'overdue';
+    public const STATUS_CANCELLED = 'cancelled';
+    public const STATUS_REFUNDED = 'refunded';
 
-    const STATUS_LABELS = [
+    public const STATUS_LABELS = [
         self::STATUS_UNPAID => 'Belum Dibayar',
         self::STATUS_PAID => 'Lunas',
         self::STATUS_OVERDUE => 'Jatuh Tempo',
@@ -102,7 +105,7 @@ class Invoice extends Model
         return $this->belongsTo(Order::class);
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(config('commerce.models.user', 'App\\Models\\User'));
     }
@@ -112,7 +115,7 @@ class Invoice extends Model
         return $this->belongsTo(Store::class);
     }
 
-    public function payments()
+    public function payments(): HasMany
     {
         return $this->hasMany(config('finance.models.payment', 'App\\Models\\Payment'));
     }

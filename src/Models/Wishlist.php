@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Moe\Commerce\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -23,7 +25,7 @@ class Wishlist extends Model
         $this->table = config('commerce.tables.wishlists', 'commerce_wishlists');
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(config('commerce.models.user', 'App\\Models\\User'));
     }

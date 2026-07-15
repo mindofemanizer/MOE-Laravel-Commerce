@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Moe\Commerce\Services;
 
 use Illuminate\Support\Facades\DB;

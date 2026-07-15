@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Moe\Commerce\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -65,7 +69,7 @@ class Store extends Model
         return 'slug';
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(config('commerce.models.user', 'App\\Models\\User'));
     }
@@ -80,7 +84,7 @@ class Store extends Model
         return $this->hasMany(Order::class);
     }
 
-    public function reviews()
+    public function reviews(): HasManyThrough
     {
         return $this->hasManyThrough(Review::class, Product::class);
     }

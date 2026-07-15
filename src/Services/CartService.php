@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Moe\Commerce\Services;
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Moe\Commerce\Models\Cart;
 use Moe\Commerce\Models\CartItem;
@@ -167,7 +168,7 @@ class CartService
     protected function addToDb(int $productId, int $quantity): array
     {
         $cart = Cart::firstOrCreate(['user_id' => Auth::id()]);
-        $product = Product::find($productId);
+        $product = Product::findOrFail($productId);
 
         $existing = $cart->items()->where('product_id', $productId)->first();
 
@@ -195,7 +196,7 @@ class CartService
         $item = $cart->items()->where('product_id', $productId)->first();
 
         if ($item) {
-            $product = Product::find($productId);
+            $product = Product::findOrFail($productId);
             $item->update([
                 'quantity' => min($quantity, $product->getStock()),
                 'subtotal' => $product->retail_price * min($quantity, $product->getStock()),
@@ -244,7 +245,7 @@ class CartService
     protected function addToSession(int $productId, int $quantity): array
     {
         $guestCart = Session::get(self::SESSION_KEY, []);
-        $product = Product::find($productId);
+        $product = Product::findOrFail($productId);
 
         $existing = collect($guestCart)->search(fn ($item) => $item['product_id'] === $productId);
 

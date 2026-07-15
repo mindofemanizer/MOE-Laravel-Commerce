@@ -60,6 +60,8 @@ return [
 
         'product_variants' => 'commerce_product_variants',
 
+        'invoices' => 'commerce_invoices',
+
     ],
 
     /*
@@ -89,6 +91,28 @@ return [
         'split_by_store' => true,
 
         'allow_guest_checkout' => true,
+
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Invoice Settings
+    |--------------------------------------------------------------------------
+    */
+
+    'invoice' => [
+
+        'due_days' => env('INVOICE_DUE_DAYS', 14),
+
+        'auto_generate' => env('INVOICE_AUTO_GENERATE', true),
+
+        'prefix' => [
+            'invoice' => 'INV',
+            'credit_note' => 'CN',
+            'debit_note' => 'DN',
+            'proforma' => 'PRO',
+            'tax' => 'TAX',
+        ],
 
     ],
 

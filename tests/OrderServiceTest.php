@@ -24,6 +24,7 @@ class OrderServiceTest extends TestCase
             'user_id' => 1,
             'store_id' => 1,
             'status' => 'pending',
+            'payment_method' => 'transfer',
             'subtotal' => 50000,
             'shipping_cost' => 10000,
             'total' => 60000,
@@ -40,6 +41,7 @@ class OrderServiceTest extends TestCase
             'user_id' => 1,
             'store_id' => 1,
             'status' => 'pending',
+            'payment_method' => 'transfer',
             'subtotal' => 50000,
             'total' => 50000,
         ]);
@@ -59,6 +61,7 @@ class OrderServiceTest extends TestCase
             'user_id' => 1,
             'store_id' => 1,
             'status' => 'completed',
+            'payment_method' => 'transfer',
             'subtotal' => 50000,
             'total' => 50000,
             'completed_at' => now(),

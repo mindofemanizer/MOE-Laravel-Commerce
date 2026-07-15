@@ -1,0 +1,43 @@
+{
+    "name": "moe/laravel-commerce",
+    "description": "Commerce module for MOE ecosystem — Store, Product, Cart, Order (Single & Multi Store)",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "MindOfEmanizer",
+            "email": "emanizer@example.com"
+        }
+    ],
+    "keywords": ["laravel", "commerce", "store", "product", "cart", "order", "moe"],
+    "autoload": {
+        "psr-4": {
+            "Moe\\Commerce\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Moe\\Commerce\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^12.0|^13.0",
+        "moe/laravel-core": "*",
+        "moe/laravel-inventory": "*",
+        "moe/laravel-shipping": "*"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0",
+        "phpunit/phpunit": "^11.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Moe\\Commerce\\CommerceServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

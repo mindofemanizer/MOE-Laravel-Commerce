@@ -1,72 +1,56 @@
 <?php
 
-namespace Moe\Commerce\Tests;
-
 use Moe\Commerce\Models\Order;
-use Moe\Commerce\Models\Product;
-use Moe\Commerce\Models\Store;
 use Moe\Commerce\Services\OrderService;
 
-class OrderServiceTest extends TestCase
-{
-    private OrderService $service;
+beforeEach(function () {
+    $this->service = new OrderService();
+});
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->service = new OrderService();
-    }
+it('can create order', function () {
+    $order = Order::create([
+        'order_number' => 'ORD-TEST-001',
+        'user_id' => 1,
+        'store_id' => 1,
+        'status' => 'pending',
+        'payment_method' => 'transfer',
+        'subtotal' => 50000,
+        'shipping_cost' => 10000,
+        'total' => 60000,
+    ]);
 
-    public function test_can_create_order()
-    {
-        $order = Order::create([
-            'order_number' => 'ORD-TEST-001',
-            'user_id' => 1,
-            'store_id' => 1,
-            'status' => 'pending',
-            'payment_method' => 'transfer',
-            'subtotal' => 50000,
-            'shipping_cost' => 10000,
-            'total' => 60000,
-        ]);
+    expect($order)->toBeInstanceOf(Order::class);
+    expect($order->status)->toEqual('pending');
+});
 
-        $this->assertInstanceOf(Order::class, $order);
-        $this->assertEquals('pending', $order->status);
-    }
+it('can cancel order', function () {
+    $order = Order::create([
+        'order_number' => 'ORD-TEST-002',
+        'user_id' => 1,
+        'store_id' => 1,
+        'status' => 'pending',
+        'payment_method' => 'transfer',
+        'subtotal' => 50000,
+        'total' => 50000,
+    ]);
 
-    public function test_can_cancel_order()
-    {
-        $order = Order::create([
-            'order_number' => 'ORD-TEST-002',
-            'user_id' => 1,
-            'store_id' => 1,
-            'status' => 'pending',
-            'payment_method' => 'transfer',
-            'subtotal' => 50000,
-            'total' => 50000,
-        ]);
+    expect($order->canBeCancelled())->toBeTrue();
 
-        $this->assertTrue($order->canBeCancelled());
+    $this->service->cancel($order, 'Test cancel');
+    expect($order->fresh()->status)->toEqual('cancelled');
+});
 
-        $this->service->cancel($order, 'Test cancel');
-        $this->assertEquals('cancelled', $order->fresh()->status);
-    }
+it('cannot cancel completed order', function () {
+    $order = Order::create([
+        'order_number' => 'ORD-TEST-003',
+        'user_id' => 1,
+        'store_id' => 1,
+        'status' => 'completed',
+        'payment_method' => 'transfer',
+        'subtotal' => 50000,
+        'total' => 50000,
+        'completed_at' => now(),
+    ]);
 
-    public function test_cannot_cancel_completed_order()
-    {
-        $this->expectException(\Exception::class);
-
-        $order = Order::create([
-            'order_number' => 'ORD-TEST-003',
-            'user_id' => 1,
-            'store_id' => 1,
-            'status' => 'completed',
-            'payment_method' => 'transfer',
-            'subtotal' => 50000,
-            'total' => 50000,
-            'completed_at' => now(),
-        ]);
-
-        $this->service->cancel($order);
-    }
-}
+    expect(fn () => $this->service->cancel($order))->toThrow(\Exception::class);
+});

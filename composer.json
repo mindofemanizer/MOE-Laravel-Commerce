@@ -4,9 +4,13 @@
     "type": "library", "license": "MIT",
     "autoload": { "psr-4": { "Moe\\Commerce\\": "src/" } },
     "autoload-dev": { "psr-4": { "Moe\\Commerce\\Tests\\": "tests/" } },
-    "require": { "php": "^8.2", "illuminate/support": "^11.0|^12.0|^13.0", "moe/laravel-core": "*", "moe/laravel-inventory": "*", "moe/laravel-shipping": "*" },
+    "require": { "php": "^8.2", "illuminate/support": "^11.0|^12.0|^13.0", "moe/laravel-core": "dev-main", "moe/laravel-inventory": "dev-main", "moe/laravel-shipping": "dev-main" },
     "require-dev": { "orchestra/testbench": "^9.0", "phpunit/phpunit": "^10.5" },
-    "repositories": [{ "type": "path", "url": "D:\\Project-Development\\MOE-Laravel-Core" }, { "type": "path", "url": "D:\\Project-Development\\MOE-Laravel-Inventory" }, { "type": "path", "url": "D:\\Project-Development\\MOE-Laravel-Shipping" }],
+    "repositories": [
+        {"type": "vcs", "url": "https://github.com/mindofemanizer/MOE-Laravel-Core"},
+        {"type": "vcs", "url": "https://github.com/mindofemanizer/MOE-Laravel-Inventory"},
+        {"type": "vcs", "url": "https://github.com/mindofemanizer/MOE-Laravel-Shipping"}
+    ],
     "extra": { "laravel": { "providers": ["Moe\\Commerce\\CommerceServiceProvider"] } },
     "minimum-stability": "dev", "prefer-stable": true
 }

@@ -23,12 +23,14 @@ class CommerceServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
-        $this->publishes([
-            __DIR__.'/../config/commerce.php' => config_path('commerce.php'),
-        ], 'commerce-config');
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/../config/commerce.php' => config_path('commerce.php'),
+            ], 'commerce-config');
 
-        $this->publishes([
-            __DIR__.'/../database/migrations' => database_path('migrations'),
-        ], 'commerce-migrations');
+            $this->publishes([
+                __DIR__.'/../database/migrations' => database_path('migrations'),
+            ], 'commerce-migrations');
+        }
     }
 }

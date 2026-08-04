@@ -1,11 +1,11 @@
-# MOE-Laravel-Commerce
+﻿# MOE-Laravel-Commerce
 
-Commerce module for MOE ecosystem — Store, Product, Cart, Order (Single & Multi Store).
+Commerce module for MOE ecosystem â€” Store, Product, Cart, Order (Single & Multi Store).
 
 ## Installation
 
 ```bash
-composer require moe/laravel-commerce
+composer require moe/laravel-commerce:dev-main
 php artisan vendor:publish --provider="Moe\Commerce\CommerceServiceProvider" --tag="commerce-config"
 php artisan vendor:publish --provider="Moe\Commerce\CommerceServiceProvider" --tag="commerce-migrations"
 php artisan migrate

@@ -1,1 +1,1 @@
-{"version":"pest_3.8.7","defects":[],"times":{"P\\Tests\\OrderServiceTest::__pest_evaluable_it_can_create_order":0.076,"P\\Tests\\OrderServiceTest::__pest_evaluable_it_can_cancel_order":0.012,"P\\Tests\\OrderServiceTest::__pest_evaluable_it_cannot_cancel_completed_order":0.006}}
+{"version":"pest_3.8.7","defects":[],"times":{"P\\Tests\\OrderServiceTest::__pest_evaluable_it_can_create_order":1.678,"P\\Tests\\OrderServiceTest::__pest_evaluable_it_can_cancel_order":0.287,"P\\Tests\\OrderServiceTest::__pest_evaluable_it_cannot_cancel_completed_order":0.007}}
